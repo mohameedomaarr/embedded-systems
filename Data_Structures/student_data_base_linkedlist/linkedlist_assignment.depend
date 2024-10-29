@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1714996838 source:c:\users\moham\onedrive\desktop\learn in depth embedded course\code_blocks\student_data_base_linkedlist\linkedlist.c
+
+1714998731 source:c:\users\moham\onedrive\desktop\learn in depth embedded course\code_blocks\student_data_base_linkedlist\main.c
+	"linkedlist.h"
+
+1714999643 c:\users\moham\onedrive\desktop\learn in depth embedded course\code_blocks\student_data_base_linkedlist\linkedlist.h
+	<stdio.h>
+	<stdlib.h>
+

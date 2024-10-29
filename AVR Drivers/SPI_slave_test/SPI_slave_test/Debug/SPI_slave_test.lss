@@ -1,0 +1,181 @@
+
+SPI_slave_test.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000ea  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000013e  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  0000013e  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000170  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000030  00000000  00000000  000001ac  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000005f2  00000000  00000000  000001dc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000562  00000000  00000000  000007ce  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000254  00000000  00000000  00000d30  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000044  00000000  00000000  00000f84  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000002fc  00000000  00000000  00000fc8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000059  00000000  00000000  000012c4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000020  00000000  00000000  0000131d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 63 00 	call	0xc6	; 0xc6 <main>
+  64:	0c 94 73 00 	jmp	0xe6	; 0xe6 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <SPI_Init>:
+	}
+}
+
+void SPI_Init(char status){
+	
+	switch(status){
+  6c:	8d 34       	cpi	r24, 0x4D	; 77
+  6e:	19 f0       	breq	.+6      	; 0x76 <SPI_Init+0xa>
+  70:	83 35       	cpi	r24, 0x53	; 83
+  72:	89 f0       	breq	.+34     	; 0x96 <SPI_Init+0x2a>
+  74:	1f c0       	rjmp	.+62     	; 0xb4 <SPI_Init+0x48>
+		case 'M':
+		SPCR |= (1<<MSTR);
+  76:	8d b1       	in	r24, 0x0d	; 13
+  78:	80 61       	ori	r24, 0x10	; 16
+  7a:	8d b9       	out	0x0d, r24	; 13
+		set_bit(DDRB,SS);
+  7c:	87 b3       	in	r24, 0x17	; 23
+  7e:	80 61       	ori	r24, 0x10	; 16
+  80:	87 bb       	out	0x17, r24	; 23
+		set_bit(DDRB,MOSI);
+  82:	87 b3       	in	r24, 0x17	; 23
+  84:	80 62       	ori	r24, 0x20	; 32
+  86:	87 bb       	out	0x17, r24	; 23
+		set_bit(DDRB,SCK);
+  88:	87 b3       	in	r24, 0x17	; 23
+  8a:	80 68       	ori	r24, 0x80	; 128
+  8c:	87 bb       	out	0x17, r24	; 23
+		reset_bit(DDRB,MISO);
+  8e:	87 b3       	in	r24, 0x17	; 23
+  90:	8f 7b       	andi	r24, 0xBF	; 191
+  92:	87 bb       	out	0x17, r24	; 23
+		break;
+  94:	0f c0       	rjmp	.+30     	; 0xb4 <SPI_Init+0x48>
+		case 'S':
+		SPCR &=~ (1<<MSTR);
+  96:	8d b1       	in	r24, 0x0d	; 13
+  98:	8f 7e       	andi	r24, 0xEF	; 239
+  9a:	8d b9       	out	0x0d, r24	; 13
+		reset_bit(DDRB,SS);
+  9c:	87 b3       	in	r24, 0x17	; 23
+  9e:	8f 7e       	andi	r24, 0xEF	; 239
+  a0:	87 bb       	out	0x17, r24	; 23
+		reset_bit(DDRB,MOSI);
+  a2:	87 b3       	in	r24, 0x17	; 23
+  a4:	8f 7d       	andi	r24, 0xDF	; 223
+  a6:	87 bb       	out	0x17, r24	; 23
+		reset_bit(DDRB,SCK);
+  a8:	87 b3       	in	r24, 0x17	; 23
+  aa:	8f 77       	andi	r24, 0x7F	; 127
+  ac:	87 bb       	out	0x17, r24	; 23
+		set_bit(DDRB,MISO);
+  ae:	87 b3       	in	r24, 0x17	; 23
+  b0:	80 64       	ori	r24, 0x40	; 64
+  b2:	87 bb       	out	0x17, r24	; 23
+		break;
+	}
+
+	SPCR |= (1<<SPE);
+  b4:	8d b1       	in	r24, 0x0d	; 13
+  b6:	80 64       	ori	r24, 0x40	; 64
+  b8:	8d b9       	out	0x0d, r24	; 13
+  ba:	08 95       	ret
+
+000000bc <Tx_Rx>:
+}
+
+char Tx_Rx(char data){
+	SPDR = data;
+  bc:	8f b9       	out	0x0f, r24	; 15
+	while(!(SPSR &(1<<SPIF)));
+  be:	77 9b       	sbis	0x0e, 7	; 14
+  c0:	fe cf       	rjmp	.-4      	; 0xbe <Tx_Rx+0x2>
+	return SPDR;
+  c2:	8f b1       	in	r24, 0x0f	; 15
+  c4:	08 95       	ret
+
+000000c6 <main>:
+#define Slave_Enable() (reset_bit(PORTB,SS))
+#define Slave_Disable() (set_bit(PORTB,SS))
+
+int main(void)
+{
+	DDRC |= (1<<1);
+  c6:	84 b3       	in	r24, 0x14	; 20
+  c8:	82 60       	ori	r24, 0x02	; 2
+  ca:	84 bb       	out	0x14, r24	; 20
+	SPI_Init('S');
+  cc:	83 e5       	ldi	r24, 0x53	; 83
+  ce:	0e 94 36 00 	call	0x6c	; 0x6c <SPI_Init>
+	
+	
+	while (1)
+	{
+		if ((Tx_Rx(0x22))==(0x55))
+  d2:	82 e2       	ldi	r24, 0x22	; 34
+  d4:	0e 94 5e 00 	call	0xbc	; 0xbc <Tx_Rx>
+  d8:	85 35       	cpi	r24, 0x55	; 85
+  da:	d9 f7       	brne	.-10     	; 0xd2 <main+0xc>
+		{
+			PORTC ^= (1<<1);
+  dc:	95 b3       	in	r25, 0x15	; 21
+  de:	82 e0       	ldi	r24, 0x02	; 2
+  e0:	89 27       	eor	r24, r25
+  e2:	85 bb       	out	0x15, r24	; 21
+  e4:	f6 cf       	rjmp	.-20     	; 0xd2 <main+0xc>
+
+000000e6 <_exit>:
+  e6:	f8 94       	cli
+
+000000e8 <__stop_program>:
+  e8:	ff cf       	rjmp	.-2      	; 0xe8 <__stop_program>

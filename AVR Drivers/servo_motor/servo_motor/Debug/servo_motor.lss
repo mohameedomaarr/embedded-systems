@@ -1,0 +1,199 @@
+
+servo_motor.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000012e  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000182  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000182  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001b4  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000028  00000000  00000000  000001f0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000006ff  00000000  00000000  00000218  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005ae  00000000  00000000  00000917  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000029d  00000000  00000000  00000ec5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000034  00000000  00000000  00001164  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000356  00000000  00000000  00001198  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000000fe  00000000  00000000  000014ee  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000018  00000000  00000000  000015ec  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 4d 00 	call	0x9a	; 0x9a <main>
+  64:	0c 94 95 00 	jmp	0x12a	; 0x12a <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <servo_control>:
+#define max_count 498
+#define mini_angle 0
+#define max_angle 180
+
+void servo_control(unsigned short angle){
+	OCR1A = ((((angle-mini_angle)*(max_count-mini_count))/(max_angle-mini_angle)) + mini_count);
+  6c:	49 ef       	ldi	r20, 0xF9	; 249
+  6e:	48 9f       	mul	r20, r24
+  70:	90 01       	movw	r18, r0
+  72:	49 9f       	mul	r20, r25
+  74:	30 0d       	add	r19, r0
+  76:	11 24       	eor	r1, r1
+  78:	a3 e8       	ldi	r26, 0x83	; 131
+  7a:	bd e2       	ldi	r27, 0x2D	; 45
+  7c:	0e 94 86 00 	call	0x10c	; 0x10c <__umulhisi3>
+  80:	96 95       	lsr	r25
+  82:	87 95       	ror	r24
+  84:	92 95       	swap	r25
+  86:	82 95       	swap	r24
+  88:	8f 70       	andi	r24, 0x0F	; 15
+  8a:	89 27       	eor	r24, r25
+  8c:	9f 70       	andi	r25, 0x0F	; 15
+  8e:	89 27       	eor	r24, r25
+  90:	87 50       	subi	r24, 0x07	; 7
+  92:	9f 4f       	sbci	r25, 0xFF	; 255
+  94:	9b bd       	out	0x2b, r25	; 43
+  96:	8a bd       	out	0x2a, r24	; 42
+  98:	08 95       	ret
+
+0000009a <main>:
+}
+
+int main(void)
+{
+	DDRD |= (1<<5);
+  9a:	81 b3       	in	r24, 0x11	; 17
+  9c:	80 62       	ori	r24, 0x20	; 32
+  9e:	81 bb       	out	0x11, r24	; 17
+   TCCR1A |= (1<<WGM11)|(1<<COM1A1);
+  a0:	8f b5       	in	r24, 0x2f	; 47
+  a2:	82 68       	ori	r24, 0x82	; 130
+  a4:	8f bd       	out	0x2f, r24	; 47
+   ICR1 =4999;
+  a6:	87 e8       	ldi	r24, 0x87	; 135
+  a8:	93 e1       	ldi	r25, 0x13	; 19
+  aa:	97 bd       	out	0x27, r25	; 39
+  ac:	86 bd       	out	0x26, r24	; 38
+   TCCR1B |= (1<<WGM13)|(1<<WGM12)|(1<<CS11)|(1<<CS10)|(1<<CS11);
+  ae:	8e b5       	in	r24, 0x2e	; 46
+  b0:	8b 61       	ori	r24, 0x1B	; 27
+  b2:	8e bd       	out	0x2e, r24	; 46
+    while (1) 
+    {
+		
+		servo_control(30);
+  b4:	8e e1       	ldi	r24, 0x1E	; 30
+  b6:	90 e0       	ldi	r25, 0x00	; 0
+  b8:	0e 94 36 00 	call	0x6c	; 0x6c <servo_control>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  bc:	2f ef       	ldi	r18, 0xFF	; 255
+  be:	87 ea       	ldi	r24, 0xA7	; 167
+  c0:	91 e6       	ldi	r25, 0x61	; 97
+  c2:	21 50       	subi	r18, 0x01	; 1
+  c4:	80 40       	sbci	r24, 0x00	; 0
+  c6:	90 40       	sbci	r25, 0x00	; 0
+  c8:	e1 f7       	brne	.-8      	; 0xc2 <main+0x28>
+  ca:	00 c0       	rjmp	.+0      	; 0xcc <main+0x32>
+  cc:	00 00       	nop
+		_delay_ms(2000);
+		servo_control(90);
+  ce:	8a e5       	ldi	r24, 0x5A	; 90
+  d0:	90 e0       	ldi	r25, 0x00	; 0
+  d2:	0e 94 36 00 	call	0x6c	; 0x6c <servo_control>
+  d6:	2f ef       	ldi	r18, 0xFF	; 255
+  d8:	87 ea       	ldi	r24, 0xA7	; 167
+  da:	91 e6       	ldi	r25, 0x61	; 97
+  dc:	21 50       	subi	r18, 0x01	; 1
+  de:	80 40       	sbci	r24, 0x00	; 0
+  e0:	90 40       	sbci	r25, 0x00	; 0
+  e2:	e1 f7       	brne	.-8      	; 0xdc <main+0x42>
+  e4:	00 c0       	rjmp	.+0      	; 0xe6 <main+0x4c>
+  e6:	00 00       	nop
+		_delay_ms(2000);
+		servo_control(180);
+  e8:	84 eb       	ldi	r24, 0xB4	; 180
+  ea:	90 e0       	ldi	r25, 0x00	; 0
+  ec:	0e 94 36 00 	call	0x6c	; 0x6c <servo_control>
+  f0:	2f ef       	ldi	r18, 0xFF	; 255
+  f2:	87 ea       	ldi	r24, 0xA7	; 167
+  f4:	91 e6       	ldi	r25, 0x61	; 97
+  f6:	21 50       	subi	r18, 0x01	; 1
+  f8:	80 40       	sbci	r24, 0x00	; 0
+  fa:	90 40       	sbci	r25, 0x00	; 0
+  fc:	e1 f7       	brne	.-8      	; 0xf6 <main+0x5c>
+  fe:	00 c0       	rjmp	.+0      	; 0x100 <main+0x66>
+ 100:	00 00       	nop
+		_delay_ms(2000);
+		servo_control(0);
+ 102:	80 e0       	ldi	r24, 0x00	; 0
+ 104:	90 e0       	ldi	r25, 0x00	; 0
+ 106:	0e 94 36 00 	call	0x6c	; 0x6c <servo_control>
+ 10a:	d4 cf       	rjmp	.-88     	; 0xb4 <main+0x1a>
+
+0000010c <__umulhisi3>:
+ 10c:	a2 9f       	mul	r26, r18
+ 10e:	b0 01       	movw	r22, r0
+ 110:	b3 9f       	mul	r27, r19
+ 112:	c0 01       	movw	r24, r0
+ 114:	a3 9f       	mul	r26, r19
+ 116:	70 0d       	add	r23, r0
+ 118:	81 1d       	adc	r24, r1
+ 11a:	11 24       	eor	r1, r1
+ 11c:	91 1d       	adc	r25, r1
+ 11e:	b2 9f       	mul	r27, r18
+ 120:	70 0d       	add	r23, r0
+ 122:	81 1d       	adc	r24, r1
+ 124:	11 24       	eor	r1, r1
+ 126:	91 1d       	adc	r25, r1
+ 128:	08 95       	ret
+
+0000012a <_exit>:
+ 12a:	f8 94       	cli
+
+0000012c <__stop_program>:
+ 12c:	ff cf       	rjmp	.-2      	; 0x12c <__stop_program>

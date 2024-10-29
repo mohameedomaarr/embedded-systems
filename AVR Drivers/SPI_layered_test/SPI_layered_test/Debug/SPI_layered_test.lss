@@ -1,0 +1,237 @@
+
+SPI_layered_test.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000132  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000186  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000186  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001b8  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000048  00000000  00000000  000001f4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000980  00000000  00000000  0000023c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000006ca  00000000  00000000  00000bbc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000380  00000000  00000000  00001286  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000068  00000000  00000000  00001608  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000041a  00000000  00000000  00001670  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000008f  00000000  00000000  00001a8a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000028  00000000  00000000  00001b19  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 36 00 	call	0x6c	; 0x6c <main>
+  64:	0c 94 97 00 	jmp	0x12e	; 0x12e <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <main>:
+
+#include "SPI.h"
+
+
+int main(void)
+{
+  6c:	cf 93       	push	r28
+  6e:	df 93       	push	r29
+  70:	00 d0       	rcall	.+0      	; 0x72 <main+0x6>
+  72:	cd b7       	in	r28, 0x3d	; 61
+  74:	de b7       	in	r29, 0x3e	; 62
+	DDRC |= (1<<1);
+  76:	84 b3       	in	r24, 0x14	; 20
+  78:	82 60       	ori	r24, 0x02	; 2
+  7a:	84 bb       	out	0x14, r24	; 20
+	SPI_CONFIG config = {Master,OCS16};
+  7c:	19 82       	std	Y+1, r1	; 0x01
+  7e:	81 e0       	ldi	r24, 0x01	; 1
+  80:	8a 83       	std	Y+2, r24	; 0x02
+	SPI_Init(&config);
+  82:	ce 01       	movw	r24, r28
+  84:	01 96       	adiw	r24, 0x01	; 1
+  86:	0e 94 5b 00 	call	0xb6	; 0xb6 <SPI_Init>
+	Slave_Enable();
+  8a:	88 b3       	in	r24, 0x18	; 24
+  8c:	8f 7e       	andi	r24, 0xEF	; 239
+  8e:	88 bb       	out	0x18, r24	; 24
+	
+	while (1)
+	{
+		if ((Tx_Rx(0x55))==(0x22))
+  90:	85 e5       	ldi	r24, 0x55	; 85
+  92:	0e 94 92 00 	call	0x124	; 0x124 <Tx_Rx>
+  96:	82 32       	cpi	r24, 0x22	; 34
+  98:	d9 f7       	brne	.-10     	; 0x90 <main+0x24>
+		{
+			PORTC ^= (1<<1);
+  9a:	95 b3       	in	r25, 0x15	; 21
+  9c:	82 e0       	ldi	r24, 0x02	; 2
+  9e:	89 27       	eor	r24, r25
+  a0:	85 bb       	out	0x15, r24	; 21
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  a2:	2f ef       	ldi	r18, 0xFF	; 255
+  a4:	83 ed       	ldi	r24, 0xD3	; 211
+  a6:	90 e3       	ldi	r25, 0x30	; 48
+  a8:	21 50       	subi	r18, 0x01	; 1
+  aa:	80 40       	sbci	r24, 0x00	; 0
+  ac:	90 40       	sbci	r25, 0x00	; 0
+  ae:	e1 f7       	brne	.-8      	; 0xa8 <main+0x3c>
+  b0:	00 c0       	rjmp	.+0      	; 0xb2 <main+0x46>
+  b2:	00 00       	nop
+  b4:	ed cf       	rjmp	.-38     	; 0x90 <main+0x24>
+
+000000b6 <SPI_Init>:
+ */ 
+#include "SPI.h"
+
+void SPI_Init(SPI_CONFIG * Config){
+
+	switch(Config->state){
+  b6:	fc 01       	movw	r30, r24
+  b8:	20 81       	ld	r18, Z
+  ba:	22 23       	and	r18, r18
+  bc:	19 f0       	breq	.+6      	; 0xc4 <SPI_Init+0xe>
+  be:	21 30       	cpi	r18, 0x01	; 1
+  c0:	89 f0       	breq	.+34     	; 0xe4 <SPI_Init+0x2e>
+  c2:	1f c0       	rjmp	.+62     	; 0x102 <SPI_Init+0x4c>
+		case Master:
+		SPI->SPI_SPCR.MASTER=1;//SPCR |= (1<<MSTR);
+  c4:	2d b1       	in	r18, 0x0d	; 13
+  c6:	20 61       	ori	r18, 0x10	; 16
+  c8:	2d b9       	out	0x0d, r18	; 13
+		set_bit(SPI_DDR,SS);
+  ca:	27 b3       	in	r18, 0x17	; 23
+  cc:	20 61       	ori	r18, 0x10	; 16
+  ce:	27 bb       	out	0x17, r18	; 23
+		set_bit(SPI_DDR,MOSI);
+  d0:	27 b3       	in	r18, 0x17	; 23
+  d2:	20 62       	ori	r18, 0x20	; 32
+  d4:	27 bb       	out	0x17, r18	; 23
+		set_bit(SPI_DDR,SCK);
+  d6:	27 b3       	in	r18, 0x17	; 23
+  d8:	20 68       	ori	r18, 0x80	; 128
+  da:	27 bb       	out	0x17, r18	; 23
+		reset_bit(SPI_DDR,MISO);
+  dc:	27 b3       	in	r18, 0x17	; 23
+  de:	2f 7b       	andi	r18, 0xBF	; 191
+  e0:	27 bb       	out	0x17, r18	; 23
+		break;
+  e2:	0f c0       	rjmp	.+30     	; 0x102 <SPI_Init+0x4c>
+		case Slave:
+		SPI->SPI_SPCR.MASTER=0;//SPCR &=~ (1<<MSTR);
+  e4:	2d b1       	in	r18, 0x0d	; 13
+  e6:	2f 7e       	andi	r18, 0xEF	; 239
+  e8:	2d b9       	out	0x0d, r18	; 13
+		reset_bit(SPI_DDR,SS);
+  ea:	27 b3       	in	r18, 0x17	; 23
+  ec:	2f 7e       	andi	r18, 0xEF	; 239
+  ee:	27 bb       	out	0x17, r18	; 23
+		reset_bit(SPI_DDR,MOSI);
+  f0:	27 b3       	in	r18, 0x17	; 23
+  f2:	2f 7d       	andi	r18, 0xDF	; 223
+  f4:	27 bb       	out	0x17, r18	; 23
+		reset_bit(SPI_DDR,SCK);
+  f6:	27 b3       	in	r18, 0x17	; 23
+  f8:	2f 77       	andi	r18, 0x7F	; 127
+  fa:	27 bb       	out	0x17, r18	; 23
+		set_bit(SPI_DDR,MISO);
+  fc:	27 b3       	in	r18, 0x17	; 23
+  fe:	20 64       	ori	r18, 0x40	; 64
+ 100:	27 bb       	out	0x17, r18	; 23
+		break;
+	}
+	
+	switch(Config->prescale){
+ 102:	fc 01       	movw	r30, r24
+ 104:	81 81       	ldd	r24, Z+1	; 0x01
+ 106:	81 30       	cpi	r24, 0x01	; 1
+ 108:	19 f4       	brne	.+6      	; 0x110 <SPI_Init+0x5a>
+		case OSC4:
+		
+		break;
+		case OCS16:
+		SPI->SPI_SPCR.PS0 =1;
+ 10a:	8d b1       	in	r24, 0x0d	; 13
+ 10c:	81 60       	ori	r24, 0x01	; 1
+ 10e:	8d b9       	out	0x0d, r24	; 13
+		break;
+	}
+	
+	Slave_Disable();
+ 110:	88 b3       	in	r24, 0x18	; 24
+ 112:	80 61       	ori	r24, 0x10	; 16
+ 114:	88 bb       	out	0x18, r24	; 24
+	SPI->SPI_SPCR.EN=1;//SPCR |= (1<<SPE)|(1<<SPR0);
+ 116:	8d b1       	in	r24, 0x0d	; 13
+ 118:	80 64       	ori	r24, 0x40	; 64
+ 11a:	8d b9       	out	0x0d, r24	; 13
+	SPI->SPI_SPCR.PS0=1;
+ 11c:	8d b1       	in	r24, 0x0d	; 13
+ 11e:	81 60       	ori	r24, 0x01	; 1
+ 120:	8d b9       	out	0x0d, r24	; 13
+ 122:	08 95       	ret
+
+00000124 <Tx_Rx>:
+}
+
+char Tx_Rx(char data){
+	
+	SPI->SPI_SPDR=data;//SPDR = data;
+ 124:	8f b9       	out	0x0f, r24	; 15
+	while(!(SPI->SPI_SPSR.PIF_REG));
+ 126:	77 9b       	sbis	0x0e, 7	; 14
+ 128:	fe cf       	rjmp	.-4      	; 0x126 <Tx_Rx+0x2>
+	return SPI->SPI_SPDR;
+ 12a:	8f b1       	in	r24, 0x0f	; 15
+ 12c:	08 95       	ret
+
+0000012e <_exit>:
+ 12e:	f8 94       	cli
+
+00000130 <__stop_program>:
+ 130:	ff cf       	rjmp	.-2      	; 0x130 <__stop_program>

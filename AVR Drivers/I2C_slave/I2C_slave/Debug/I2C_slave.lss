@@ -1,0 +1,152 @@
+
+I2C_slave.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000c8  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000011c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  0000011c  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000014c  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000078  00000000  00000000  00000188  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000764  00000000  00000000  00000200  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000628  00000000  00000000  00000964  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000378  00000000  00000000  00000f8c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000000b8  00000000  00000000  00001304  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000343  00000000  00000000  000013bc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000004e  00000000  00000000  000016ff  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000058  00000000  00000000  0000174d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 4b 00 	call	0x96	; 0x96 <main>
+  64:	0c 94 62 00 	jmp	0xc4	; 0xc4 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <TWI_MY_ADRESS>:
+unsigned char TWI_DATA(unsigned char data){
+	TWDR=data;
+	TWCR = (1<<TWINT)|(1<<TWEN);
+	while (!(TWCR&(1<<TWINT)));
+	return (TWI_status());
+}
+  6c:	82 b9       	out	0x02, r24	; 2
+  6e:	08 95       	ret
+
+00000070 <TW_init>:
+  70:	10 b8       	out	0x00, r1	; 0
+  72:	0e 94 36 00 	call	0x6c	; 0x6c <TWI_MY_ADRESS>
+  76:	84 e8       	ldi	r24, 0x84	; 132
+  78:	86 bf       	out	0x36, r24	; 54
+  7a:	08 95       	ret
+
+0000007c <TWI_status>:
+  7c:	81 b1       	in	r24, 0x01	; 1
+  7e:	88 7f       	andi	r24, 0xF8	; 248
+  80:	08 95       	ret
+
+00000082 <TWI_READACK>:
+
+unsigned char TWI_READACK(){
+	TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWEA);
+  82:	84 ec       	ldi	r24, 0xC4	; 196
+  84:	86 bf       	out	0x36, r24	; 54
+	while (!(TWCR&(1<<TWINT)));
+  86:	06 b6       	in	r0, 0x36	; 54
+  88:	07 fe       	sbrs	r0, 7
+  8a:	fd cf       	rjmp	.-6      	; 0x86 <TWI_READACK+0x4>
+	return (TWI_status());
+  8c:	0e 94 3e 00 	call	0x7c	; 0x7c <TWI_status>
+}
+  90:	08 95       	ret
+
+00000092 <TWI_recived>:
+
+unsigned char TWI_recived(){
+	return TWDR;
+  92:	83 b1       	in	r24, 0x03	; 3
+  94:	08 95       	ret
+
+00000096 <main>:
+#include "TWI.h"
+
+
+int main(void)
+{
+	DDRC |=(1<<2);
+  96:	84 b3       	in	r24, 0x14	; 20
+  98:	84 60       	ori	r24, 0x04	; 4
+  9a:	84 bb       	out	0x14, r24	; 20
+	TW_init(0x03);//0000 0011
+  9c:	83 e0       	ldi	r24, 0x03	; 3
+  9e:	0e 94 38 00 	call	0x70	; 0x70 <TW_init>
+	while (1)
+	{
+		if (TWI_READACK()==0X60){
+  a2:	0e 94 41 00 	call	0x82	; 0x82 <TWI_READACK>
+  a6:	80 36       	cpi	r24, 0x60	; 96
+  a8:	e1 f7       	brne	.-8      	; 0xa2 <main+0xc>
+			if (TWI_READACK()==0X80){
+  aa:	0e 94 41 00 	call	0x82	; 0x82 <TWI_READACK>
+  ae:	80 38       	cpi	r24, 0x80	; 128
+  b0:	c1 f7       	brne	.-16     	; 0xa2 <main+0xc>
+				
+				if (TWI_recived() == 'M'){
+  b2:	0e 94 49 00 	call	0x92	; 0x92 <TWI_recived>
+  b6:	8d 34       	cpi	r24, 0x4D	; 77
+  b8:	a1 f7       	brne	.-24     	; 0xa2 <main+0xc>
+					PORTC ^=(1<<2);
+  ba:	95 b3       	in	r25, 0x15	; 21
+  bc:	84 e0       	ldi	r24, 0x04	; 4
+  be:	89 27       	eor	r24, r25
+  c0:	85 bb       	out	0x15, r24	; 21
+  c2:	ef cf       	rjmp	.-34     	; 0xa2 <main+0xc>
+
+000000c4 <_exit>:
+  c4:	f8 94       	cli
+
+000000c6 <__stop_program>:
+  c6:	ff cf       	rjmp	.-2      	; 0xc6 <__stop_program>

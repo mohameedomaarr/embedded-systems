@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1714907494 source:c:\users\moham\onedrive\desktop\learn in depth embedded course\code_blocks\lifo\lifo.c
+	"lifo.h"
+
+1714874062 c:\users\moham\onedrive\desktop\learn in depth embedded course\code_blocks\lifo\lifo.h
+	"stdio.h"
+	"stdlib.h"
+
+1714906608 source:c:\users\moham\onedrive\desktop\learn in depth embedded course\code_blocks\lifo\main.c
+	"lifo.h"
+
