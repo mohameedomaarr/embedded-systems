@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "pressure_sensor_driver.h": "c",
-        "main_algorithm.h": "c"
-    }
-}
